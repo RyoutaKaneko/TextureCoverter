@@ -6,6 +6,7 @@
 enum Argument {
 	kApplicationPath,
 	kFilePath,
+
 	NumArgument
 };
 
@@ -19,6 +20,8 @@ int main(int argc,char* argv[]) {
 	//	//‰üs
 	//	printf("\n");
 	//}
+
+	assert(argc >= NumArgument);
 
 	//COMƒ‰ƒCƒuƒ‰ƒŠ‚Ì‰Šú‰»
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
