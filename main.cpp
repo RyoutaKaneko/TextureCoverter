@@ -1,27 +1,25 @@
 #include <cstdio>
 #include <cstdlib>
-#include "DirectXTex.h"
+#include <cassert>
+#include <comdef.h>
+#include <d3d12.h>
 #include "TextureConverter.h"
 
+// コマンドライン引数
 enum Argument {
-	kApplicationPath,
-	kFilePath,
-
+	kApplicationPath, // アプリケーションパス
+	kFilePath,		  // 渡されたファイルパス
 	NumArgument
 };
 
 
 int main(int argc,char* argv[]) {
 
-	////argcの数だけ繰り返す
-	//for (int i = 0; i < argc; i++) {
-	//	//argvのi番を表示
-	//	printf(argv[i]);
-	//	//改行
-	//	printf("\n");
-	//}
-
-	assert(argc >= NumArgument);
+	// コマンドライン引数指定なし
+	if (argc < NumArgument) {
+		// 使い方を表示する
+		TextureConverter::OutputUsage();
+	}
 
 	//COMライブラリの初期化
 	HRESULT hr = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
@@ -29,11 +27,18 @@ int main(int argc,char* argv[]) {
 
 	TextureConverter converter;
 
-	converter.ConvertTextureWICToDDS(argv[kFilePath]);
+
+	// オプションの数
+	int numOptions = argc - NumArgument;
+	// オプション配列（ダブルポインタ）
+	char** options = argv + NumArgument;
+
+	// テクスチャ変換
+	converter.ConvertTextureWICToDDS(argv[kFilePath], numOptions, options);
+
 
 	//COMライブラリ終了
 	CoUninitialize();
 
-	system("pause");
 	return 0;
 }

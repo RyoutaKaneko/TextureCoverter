@@ -1,34 +1,59 @@
 #pragma once
 #include <string>
+#include <windows.h>
 #include <DirectXTex.h>
 
-//テクスチャコンバーター
 class TextureConverter
 {
 public:
-	//テクスチャをWICからDDSに変換する
-	void ConvertTextureWICToDDS(const std::string& filePath);
+	/// <summary>
+	/// テクスチャをWICからDDSに変換する
+	/// </summary>
+	/// <param name="filePath">ファイルパス</param>
+	/// <param name="numOptions">オプションの数</param>
+	/// <param name="options">オプション配列</param>
+	void ConvertTextureWICToDDS(const std::string& filePath, int numOptions = 0, char* options[] = nullptr);
+
+	/// <summary>
+	/// 使用方法を出力（表示）する
+	/// </summary>
+	static void OutputUsage();
 
 private:
-	//テクスチャファイル読み込み
-	void LoadWICTectureFromFile(const std::string& filepath);
-	//マルチバイト文字列をワイド文字列に変換
-	static std::wstring ConvertMultiByteStringToWideString(const std::string& mstring);
-	//フォルダパスとファイル名を分離する
-	void SeparatefilePath(const std::wstring& filePath);
-	//DDSテクスチャとしてファイル書き出し
-	void SaveDDSTextureToFIle();
-	//メンバ変数
+	/// <summary>
+	/// テクスチャファイルの読み込み
+	/// </summary>
+	/// <param name="filePath">ファイルパス</param>
+	void LoadWICTextureFromFile(const std::string& filePath);
+
+	/// <summary>
+	/// マルチバイト文字列をワイド文字列に変換
+	/// </summary>
+	/// <param name="mString">マルチバイト文字列</param>
+	/// <returns>ワイド文字列</returns>
+	static std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
+
+	/// <summary>
+	/// フォルダパスとファイル名を分解する
+	/// </summary>
+	/// <param name="filePath">ファイルパス</param>
+	void SeparateFilePath(const std::wstring& filePath);
+
+	/// <summary>
+	/// DDSテクスチャとしてファイル書き出し
+	/// </summary>
+	void SaveDDSTextureToFile(int numOptions, char* options[]);
+
 private:
-	//画像の情報
+	// 画像の情報
 	DirectX::TexMetadata metadata_;
-	//画像イメージのコンテナ
+	// 画像イメージのコンテナ
 	DirectX::ScratchImage scratchImage_;
-	//①ディレクトリパス
+	// ディレクトリパス
 	std::wstring directoryPath_;
-	//②ファイル名
+	// ファイル名
 	std::wstring fileName_;
-	//③ファイル拡張子
+	// ファイル拡張子
 	std::wstring fileExt_;
 };
 
